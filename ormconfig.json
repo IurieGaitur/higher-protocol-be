@@ -1,6 +1,6 @@
 [
     {
-        "name": "default",
+        "name": "production",
         "type": "sqlite",
         "database": "config/development.sqlite3",
         "entities": ["dist/**/*.entity{.ts,.js}"],
@@ -8,13 +8,13 @@
         "autoLoadEntities": true
     },
     {
-        "name": "production",
-        "url": "",
+        "name": "default",
         "type": "postgres",
-        "host": "localhost",
+        "host": "ec2-54-155-92-75.eu-west-1.compute.amazonaws.com",
         "port": 5432,
-        "username": "ur-username",
-        "password": "password",
+        "database": "dfipa7732rd3qa",
+        "username": "edqseegpwsrmqh",
+        "password": "9c575e80c1d2fcdd5dd01f3de02896249c8bcba67a2b62ea818f12fd7e8a6f81",
         "entities": ["dist/**/*.entity{.ts,.js}"]
     }
 ]

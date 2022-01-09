@@ -91,7 +91,6 @@ export default class JobContractModel {
     }
 
     async getJobContract(contractId: ContractId, jobId: number): Promise<any> {
-        console.log(contractId);
         const contractQuery = await new ContractCallQuery()
             .setGas(300000)
             .setContractId(contractId)
@@ -101,7 +100,6 @@ export default class JobContractModel {
         try {
             const rawMessage = await contractQuery.execute(this.client);
             const jobContract = new JobContract().fromHedera(rawMessage);
-            console.log(jobContract);
             return jobContract;
         } catch (ex) {
             throw new HttpException("Could not get job contract.Internal error", HttpStatus.SERVICE_UNAVAILABLE);

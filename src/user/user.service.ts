@@ -14,7 +14,6 @@ export class UserService {
   }
 
   async findByIdAndEmail(id: number, email: string) {
-    console.log(id, email);
     const user = await User.findOne({'id': id, 'email': email});
     if (!user) {
       throw new HttpException('User is not existent', HttpStatus.UNAUTHORIZED);
