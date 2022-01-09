@@ -15,6 +15,12 @@
         "database": "dfipa7732rd3qa",
         "username": "edqseegpwsrmqh",
         "password": "9c575e80c1d2fcdd5dd01f3de02896249c8bcba67a2b62ea818f12fd7e8a6f81",
-        "entities": ["dist/**/*.entity{.ts,.js}"]
+        "entities": ["dist/**/*.entity{.ts,.js}"],
+        "ssl": true,
+        "extra": {
+            "ssl": {
+                "rejectUnauthorized": false
+            }
+        }
     }
 ]
