@@ -1,28 +1,39 @@
-import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { LocalAuthGuard } from './auth/local-auth.guard';
+import { CreateUserDto } from './user/dto/create-user.dto';
+import { UserService } from './user/user.service';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService, private appService: AppService) {}
+  constructor(private authService: AuthService, private appService: AppService, private userService: UserService) {}
 
-  @UseGuards(LocalAuthGuard)
+  
   @Post('/login')
   async login(@Request() req) {
-    console.log("Starting...")
-    return this.authService.login(req.user);
+      const user = this.authService.login(req.body.email, req.body.password);
+      return user;
+  }
+
+  @Post('/register')
+  async register(@Body() createUserDto: CreateUserDto) {
+
+      const user = this.authService.register(createUserDto);
+      return user;
+  }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  async getProfile(@Request() req) {
+    const user = await this.userService.findByIdAndEmail(req.user.id, req.user.email);
+    return user;
   }
 
   @Get()
   getHello(): string {
     return this.appService.getHello();
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
   }
 }

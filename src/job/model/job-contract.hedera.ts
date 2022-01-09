@@ -1,6 +1,8 @@
-import { Client, PrivateKey, AccountCreateTransaction, Hbar, AccountBalanceQuery, FileCreateTransaction, ContractCreateTransaction, ContractCallQuery, ContractExecuteTransaction, ContractFunctionParameters } from "@hashgraph/sdk";
+import { Client, PrivateKey, AccountCreateTransaction, Hbar, AccountBalanceQuery, FileCreateTransaction, ContractCreateTransaction, ContractCallQuery, ContractExecuteTransaction, ContractFunctionParameters, ContractId } from "@hashgraph/sdk";
+import { HttpException, HttpStatus } from "@nestjs/common";
 import { CreateContractDto } from "../dto/create-contract.dto";
-
+import { JobContract } from "../entities/job_contract.entity";
+import * as fs from 'fs';
 
 export default class JobContractModel {
 
@@ -44,8 +46,14 @@ export default class JobContractModel {
             .execute(client);
     
         console.log("The new account balance is: " +accountBalance.hbars.toTinybars() +" tinybar.");
-    
       }
+
+    tryLoadContract(): ContractId {
+        const key = fs.readFileSync('config/hedera_contract.txt', 'utf8')
+        console.log(key);
+        const contractId = ContractId.fromString(key);
+        return contractId;
+    }
 
     async deployJobContract() {
         let bytecodeFileId = await this.storeOnHedera();
@@ -60,7 +68,7 @@ export default class JobContractModel {
 
         console.log("Contract is deployed. Contract ID:", newContractId);
 
-        return newContractId;
+        return {contractObj: newContractId, contractString: newContractId.toStringWithChecksum(this.client)};
     }
 
     private async storeOnHedera() {
@@ -82,35 +90,51 @@ export default class JobContractModel {
         return bytecodeFileId;
     }
 
-    async getJobContract(contractId: string, jobId: number) {
+    async getJobContract(contractId: ContractId, jobId: number): Promise<any> {
+        console.log(contractId);
         const contractQuery = await new ContractCallQuery()
-            .setGas(100000)
+            .setGas(300000)
             .setContractId(contractId)
             .setFunction("getContractDetails", new ContractFunctionParameters().addUint256(jobId))
             .setQueryPayment(new Hbar(2));
 
-        const rawMessage = await contractQuery.execute(this.client);
-        const message = rawMessage.getString(0);
-
-        console.log("The contract message", message);
+        try {
+            const rawMessage = await contractQuery.execute(this.client);
+            const jobContract = new JobContract().fromHedera(rawMessage);
+            console.log(jobContract);
+            return jobContract;
+        } catch (ex) {
+            throw new HttpException("Could not get job contract.Internal error", HttpStatus.SERVICE_UNAVAILABLE);
+        }
     }
 
-    async createJobContract(contractId: string, createContractDto: CreateContractDto) {
+    async createHederaContract(contractId: ContractId, createContractDto: CreateContractDto): Promise<any> {
+        console.log(contractId);
         const contractExecTx = await new ContractExecuteTransaction()
-            .setGas(100000)
-            .setContractId(contractId)
-            .setFunction("createContract", this.buildJobCreateBody(contractId, createContractDto))
+            .setContractId(contractId)    
+            .setGas(300000)
+            .setFunction("createContract", this.buildJobCreateBody(createContractDto.job_id.toString(), createContractDto))
             
-
         const submitExecTx = await contractExecTx.execute(this.client);
-        const receipt = await submitExecTx.getReceipt(this.client);
-        
-        console.log("The transaction status is " +receipt.status.toString());
-
+        try {
+            const receipt = await submitExecTx.getReceipt(this.client);
+            console.log("The transaction status is " +receipt.status.toString(), receipt, receipt.topicSequenceNumber, receipt.topicRunningHash, receipt.serials);
+        } catch(ex) {
+            throw new HttpException("Could not get job contract.Internal error", HttpStatus.SERVICE_UNAVAILABLE);
+        }
     }
 
     buildJobCreateBody(contractId:string, createContractDto: CreateContractDto): ContractFunctionParameters {
-        return new ContractFunctionParameters().addUint256(parseInt(contractId));
+
+        const response = new ContractFunctionParameters()
+                .addUint256(parseInt(contractId))
+                .addString(createContractDto.condition)
+                .addUint256(parseInt(createContractDto.value))
+                .addUint256(createContractDto.min_points)
+                .addString(createContractDto.task)
+                .addString(createContractDto.description);
+
+        return response;
     }
 
     async sendTransaction() {
@@ -139,4 +163,38 @@ export default class JobContractModel {
         // console.log("The account balance after the transfer is: " +getNewBalance.hbars.toTinybars() +" tinybar.")
     
       }
+
+
+      async createJobContractTest(contractId: ContractId) {
+        const contractExecTx = await new ContractExecuteTransaction()
+            .setContractId(contractId)    
+            
+            .setFunction("setCandidate", new ContractFunctionParameters().addString("Hanz"))
+            
+        
+        const submitExecTx = await contractExecTx.execute(this.client);
+        try {
+            console.log(submitExecTx)
+            const receipt = await submitExecTx.getReceipt(this.client);
+            console.log("The transaction status is " +receipt.status.toString(), receipt);
+        } catch(ex) {
+            console.log(ex);
+        }
+    }
+
+    async getJobContractTest(contractId: ContractId) {
+        const contractQuery = await new ContractCallQuery()
+            .setGas(300000)
+            .setContractId(contractId)
+            .setFunction("getCandidate")
+            .setQueryPayment(new Hbar(2));
+
+        try {
+            const rawMessage = await contractQuery.execute(this.client);
+            const message = rawMessage.getString(0);
+            console.log("The contract message", message);
+        } catch(ex) {
+            console.log(ex);
+        }
+    }
 }

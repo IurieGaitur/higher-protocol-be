@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,12 +13,26 @@ export class UserService {
     return addedUser;
   }
 
+  async findByIdAndEmail(id: number, email: string) {
+    console.log(id, email);
+    const user = await User.findOne({'id': id, 'email': email});
+    if (!user) {
+      throw new HttpException('User is not existent', HttpStatus.UNAUTHORIZED);
+    }
+    return user;
+  }
+
   async findAll() {
     const users = await User.find();
     return users;
   }
 
-  async findOne(id: number) {
+  async findOne(email: string) {
+    const user = await User.findOne({'email': email});
+    return user;
+  }
+
+  async findOneById(id: number) {
     const user = await User.findOne({'id': id});
     return user;
   }

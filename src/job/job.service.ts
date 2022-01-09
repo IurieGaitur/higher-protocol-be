@@ -1,3 +1,4 @@
+import { ContractId } from '@hashgraph/sdk';
 import { Injectable } from '@nestjs/common';
 import { CreateCandidateDto } from 'src/candidate/dto/create-candidate.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
@@ -7,13 +8,17 @@ import { Job } from './entities/job.entity';
 import { JobContract } from './entities/job_contract.entity';
 import AccountCreation from './model/account-creation.hedera';
 import JobContractModel from './model/job-contract.hedera';
-
+import * as fs from 'fs';
 
 @Injectable()
 export class JobService {
 
+  jobModel: JobContractModel;
+  contractId: ContractId;
+
   constructor() {
-    new JobContractModel().connectHedera()
+    this.jobModel = new JobContractModel()
+    this.jobModel.connectHedera().then(it => this.contractId = this.jobModel.tryLoadContract());
   }
 
   create(createJobDto: CreateJobDto) {
@@ -40,14 +45,27 @@ export class JobService {
     await Job.delete(id);
   }
 
-  async createContract(contract: CreateContractDto) {
-    
+  async deployContract() {
+    const contract = await this.jobModel.deployJobContract();
+    this.contractId = contract.contractObj;
+    //Store the string repr. of the file on local
+    const path = "config/hedera_contract.txt"
+    fs.writeFile(path, contract.contractString, err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
 
-    return new JobContract();
+  async createContract(contract: CreateContractDto) {
+    const createdContractHash = await this.jobModel.createHederaContract(this.contractId, contract);
+    var jobContract = CreateContractDto.toJobContract(contract);
+    jobContract.hash_value = "#Undefined";
+    await jobContract.save();
+    return jobContract;
   }
 
   async getContract(job_id: number) {
-      const contract = await JobContract.find({'job_id': job_id});
-      return contract;
+      return this.jobModel.getJobContract(this.contractId, job_id);
   }
 }

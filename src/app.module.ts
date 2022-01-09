@@ -7,7 +7,6 @@ import { AssessmentModule } from './assessment/assessment.module';
 import { CandidateModule } from './candidate/candidate.module';
 import { StatsModule } from './stats/stats.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
 import { UserService } from './user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from "typeorm";
@@ -18,7 +17,7 @@ import { getConnectionOptions } from "typeorm";
       useFactory: async () =>
         Object.assign(await getConnectionOptions()),
     }),
-    UserModule, JobModule, AssessmentModule, CandidateModule, StatsModule, AuthModule, UsersModule,
+    UserModule, JobModule, AssessmentModule, CandidateModule, StatsModule, AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

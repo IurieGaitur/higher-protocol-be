@@ -14,4 +14,6 @@ export class User extends BaseEntity{
     category: number;
     @Column()
     image: string;
+    @Column()
+    password: string;
 }

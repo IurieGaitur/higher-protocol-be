@@ -10,10 +10,13 @@ export class CreateContractDto {
     created_at: Date;
     hash_value: string;
     job_id: number;
+    released: number;
 
-    static toJob(jobContractDto: CreateContractDto) {
+    static toJobContract(jobContractDto: CreateContractDto) {
         const contract = new JobContract();
         Object.assign(contract, jobContractDto);
+        contract.created_at = new Date();
+        contract.released = 0;
         return contract;
     }
 
