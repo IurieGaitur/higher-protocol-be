@@ -7,7 +7,8 @@ export class CreateUserDto {
     last_name: string;
     category: number;
     image: string;
-    password: string
+    password: string;
+    created_at: Date;
 
     constructor(email:string, password:string, firstName:string, lastName:string, category:number) {
         this.email = email;
@@ -16,20 +17,14 @@ export class CreateUserDto {
         this.last_name = lastName;
         this.category = category;
         this.image = "";
+        this.created_at = new Date();
     }
 
-    toUser(): User {
+    static toUser(createUser: CreateUserDto): User {
         const user = new User();
-        Object.assign(user, this);
+        Object.assign(user, createUser);
+        user.image = "";
+        user.created_at = new Date();
         return user;
-    }
-
-    fromBody(body: any) {
-        this.email = body.email;
-        this.password = body.password;
-        this.first_name = body.firstName;
-        this.last_name = body.lastName;
-        this.category = body.category;
-        this.image = "";
     }
 }

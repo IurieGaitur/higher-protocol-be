@@ -16,4 +16,6 @@ export class User extends BaseEntity{
     image: string;
     @Column()
     password: string;
+    @Column()
+    created_at: Date;
 }

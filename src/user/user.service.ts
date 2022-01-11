@@ -8,7 +8,8 @@ import { User } from './entities/user.entity';
 export class UserService {
 
   async create(createUserDto: CreateUserDto) {
-    let newUser = createUserDto.toUser();
+    console.log(createUserDto);
+    let newUser = CreateUserDto.toUser(createUserDto);
     const addedUser = await newUser.save()
     return addedUser;
   }
@@ -37,10 +38,10 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    updateUserDto.id = id
-    let newUser = updateUserDto.toUser();
-    const addedUser = await newUser.save();
-    return addedUser;
+    // updateUserDto.id = id
+    // let newUser = updateUserDto.toUser();
+    // const addedUser = await newUser.save();
+    // return addedUser;
   }
 
   async remove(id: number) {
