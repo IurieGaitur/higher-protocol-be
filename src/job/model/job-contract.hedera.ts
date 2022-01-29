@@ -13,7 +13,7 @@ export default class JobContractModel {
         //Grab your Hedera testnet account ID and private key from your .env file
         const hederaAccountId = process.env.MY_ACCOUNT_ID;
         const hederaPrivateKey = process.env.MY_PRIVATE_KEY;
-    
+
         // If we weren't able to grab it, we should throw a new error
         if (hederaAccountId == null ||
           hederaPrivateKey == null ) {
@@ -38,7 +38,7 @@ export default class JobContractModel {
         const getReceipt = await newAccount.getReceipt(client);
         const newAccountId = getReceipt.accountId;
     
-        console.log("The new account ID is: " +newAccountId);
+        console.log("The new account ID is: ", newAccountId);
     
         //Verify the account balance
         const accountBalance = await new AccountBalanceQuery()
@@ -50,8 +50,9 @@ export default class JobContractModel {
 
     tryLoadContract(): ContractId {
         const key = fs.readFileSync('config/hedera_contract.txt', 'utf8')
-        console.log(key);
+        console.log("Contract ID:", key);
         const contractId = ContractId.fromString(key);
+        console.log("Try load contractID:", contractId);
         return contractId;
     }
 
@@ -90,7 +91,7 @@ export default class JobContractModel {
         return bytecodeFileId;
     }
 
-    async getJobContract(contractId: ContractId, jobId: number): Promise<any> {
+    async getJobContract(contractId: ContractId, jobId: number): Promise<JobContract> {
         const contractQuery = await new ContractCallQuery()
             .setGas(300000)
             .setContractId(contractId)
@@ -106,7 +107,7 @@ export default class JobContractModel {
         }
     }
 
-    async createHederaContract(contractId: ContractId, createContractDto: CreateContractDto): Promise<any> {
+    async createHederaContract(contractId: ContractId, createContractDto: CreateContractDto): Promise<string> {
         console.log(contractId);
         const contractExecTx = await new ContractExecuteTransaction()
             .setContractId(contractId)    
@@ -115,11 +116,14 @@ export default class JobContractModel {
             
         const submitExecTx = await contractExecTx.execute(this.client);
         try {
+            const hash = Buffer.from(submitExecTx.transactionHash).toString('base64')
             const receipt = await submitExecTx.getReceipt(this.client);
-            console.log("The transaction status is " +receipt.status.toString(), receipt, receipt.topicSequenceNumber, receipt.topicRunningHash, receipt.serials);
+            console.log("The transaction status is " +receipt.status.toString(), receipt, receipt.topicSequenceNumber, receipt.topicRunningHash, receipt.serials, hash);
+            return hash;
         } catch(ex) {
             throw new HttpException("Could not get job contract.Internal error", HttpStatus.SERVICE_UNAVAILABLE);
         }
+        return null;
     }
 
     buildJobCreateBody(contractId:string, createContractDto: CreateContractDto): ContractFunctionParameters {

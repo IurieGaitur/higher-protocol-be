@@ -19,7 +19,6 @@ export class AppController {
 
   @Post('/register')
   async register(@Body() createUserDto: CreateUserDto) {
-
       const user = this.authService.register(createUserDto);
       return user;
   }
