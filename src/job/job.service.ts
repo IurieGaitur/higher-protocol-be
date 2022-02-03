@@ -6,8 +6,8 @@ import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { Job } from './entities/job.entity';
 import { JobContract } from './entities/job_contract.entity';
-import * as AccountCreation from './model/account-creation.hedera.js';
-import * as JobContractModel from './model/job-contract.hedera.js';
+// import * as AccountCreation from './model/account-creation.hedera';
+import JobContractModel from './../../dist/job/model/job-contract.hedera';
 import * as fs from 'fs';
 
 @Injectable()
