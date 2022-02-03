@@ -121,6 +121,7 @@ export default class JobContractModel {
             console.log("The transaction status is " +receipt.status.toString(), receipt, receipt.topicSequenceNumber, receipt.topicRunningHash, receipt.serials, hash);
             return hash;
         } catch(ex) {
+            console.log(ex);
             throw new HttpException("Could not get job contract.Internal error", HttpStatus.SERVICE_UNAVAILABLE);
         }
         return null;
