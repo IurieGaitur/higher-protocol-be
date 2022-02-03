@@ -7,7 +7,7 @@ import * as fs from 'fs';
 export default class JobContractModel {
 
     client;
-    jobContract = require("./../../../config/job_contract.json");
+    jobContract = require("../../../config/job_contract.json");
     
     async connectHedera() {
         //Grab your Hedera testnet account ID and private key from your .env file
