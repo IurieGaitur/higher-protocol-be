@@ -48,7 +48,7 @@ export default class JobContractModel {
         console.log("The new account balance is: " +accountBalance.hbars.toTinybars() +" tinybar.");
       }
 
-    tryLoadContract(): ContractId {
+    tryLoadContract() {
         const key = fs.readFileSync('config/hedera_contract.txt', 'utf8')
         console.log("Contract ID:", key);
         const contractId = ContractId.fromString(key);
@@ -72,7 +72,7 @@ export default class JobContractModel {
         return {contractObj: newContractId, contractString: newContractId.toStringWithChecksum(this.client)};
     }
 
-    private async storeOnHedera() {
+    async storeOnHedera() {
         const bytecode = this.jobContract.data.bytecode.object;
 
         //Create and store on hedera the file in hex format
@@ -91,7 +91,7 @@ export default class JobContractModel {
         return bytecodeFileId;
     }
 
-    async getJobContract(contractId: ContractId, jobId: number): Promise<JobContract> {
+    async getJobContract(contractId, jobId) {
         const contractQuery = await new ContractCallQuery()
             .setGas(300000)
             .setContractId(contractId)
@@ -107,7 +107,7 @@ export default class JobContractModel {
         }
     }
 
-    async createHederaContract(contractId: ContractId, createContractDto: CreateContractDto): Promise<string> {
+    async createHederaContract(contractId, createContractDto) {
         console.log(contractId);
         const contractExecTx = await new ContractExecuteTransaction()
             .setContractId(contractId)    
@@ -127,7 +127,7 @@ export default class JobContractModel {
         return null;
     }
 
-    buildJobCreateBody(contractId:string, createContractDto: CreateContractDto): ContractFunctionParameters {
+    buildJobCreateBody(contractId, createContractDto) {
 
         const response = new ContractFunctionParameters()
                 .addUint256(parseInt(contractId))
@@ -168,7 +168,7 @@ export default class JobContractModel {
       }
 
 
-      async createJobContractTest(contractId: ContractId) {
+      async createJobContractTest(contractId) {
         const contractExecTx = await new ContractExecuteTransaction()
             .setContractId(contractId)    
             
@@ -185,7 +185,7 @@ export default class JobContractModel {
         }
     }
 
-    async getJobContractTest(contractId: ContractId) {
+    async getJobContractTest(contractId) {
         const contractQuery = await new ContractCallQuery()
             .setGas(300000)
             .setContractId(contractId)
