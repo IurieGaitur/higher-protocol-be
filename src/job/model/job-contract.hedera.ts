@@ -122,7 +122,7 @@ export default class JobContractModel {
             return hash;
         } catch(ex) {
             console.log(ex);
-            throw new HttpException("Could not get job contract.Internal error", HttpStatus.SERVICE_UNAVAILABLE);
+            throw new HttpException("Could not get job contract.Internal error:" + ex, HttpStatus.SERVICE_UNAVAILABLE);
         }
         return null;
     }
