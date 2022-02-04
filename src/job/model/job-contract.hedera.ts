@@ -93,7 +93,7 @@ export default class JobContractModel {
 
     async getJobContract(contractId, jobId) {
         const contractQuery = await new ContractCallQuery()
-            .setGas(300000)
+            .setGas(100000)
             .setContractId(contractId)
             .setFunction("getContractDetails", new ContractFunctionParameters().addUint256(jobId))
             .setQueryPayment(new Hbar(2));
@@ -111,7 +111,7 @@ export default class JobContractModel {
         console.log(contractId);
         const contractExecTx = await new ContractExecuteTransaction()
             .setContractId(contractId)    
-            .setGas(300000)
+            .setGas(100000)
             .setFunction("createContract", this.buildJobCreateBody(createContractDto.job_id.toString(), createContractDto))
             
         const submitExecTx = await contractExecTx.execute(this.client);
