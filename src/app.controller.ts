@@ -5,15 +5,19 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { CreateUserDto } from './user/dto/create-user.dto';
 import { UserService } from './user/user.service';
+import { AuthGuard } from '@nestjs/passport';
+import { LoginUserDto } from './user/dto/login-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller()
 export class AppController {
   constructor(private authService: AuthService, private appService: AppService, private userService: UserService) {}
 
   
   @Post('/login')
-  async login(@Request() req) {
-      const user = this.authService.login(req.body.email, req.body.password);
+  async login(@Body() loginUserDto: LoginUserDto) {
+      const user = this.authService.login(loginUserDto.email, loginUserDto.password);
       return user;
   }
 
@@ -21,6 +25,16 @@ export class AppController {
   async register(@Body() createUserDto: CreateUserDto) {
       const user = this.authService.register(createUserDto);
       return user;
+  }
+
+  @Get()
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Request() req) {}
+
+  @Get('redirect')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Request() req) {
+    return this.appService.googleLogin(req)
   }
 
 

@@ -4,7 +4,9 @@ import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { LocalAuthGuard } from './../auth/local-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Candidates')
 @Controller('candidates')
 export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}

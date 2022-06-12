@@ -4,7 +4,9 @@ import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Jobs')
 @Controller('jobs')
 export class JobController {
   constructor(private readonly jobService: JobService) {}
