@@ -33,7 +33,7 @@ export class JobService {
   }
 
   async findOne(id: number): Promise<Job> {
-    const job = await Job.findOne({'id': id});
+    const job = await Job.findOneBy({'id': id});
     return job;
   }
 
@@ -67,7 +67,7 @@ export class JobService {
 
   async getContract(job_id: number) {
       const jobHedera = await this.jobModel.getJobContract(this.contractId, job_id);
-      let savedJob = await JobContract.findOne({'job_id': job_id});
+      let savedJob = await JobContract.findOneBy({'job_id': job_id});
       if (savedJob) {
         jobHedera.hash_value = savedJob.hash_value;
       }

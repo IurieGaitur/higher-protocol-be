@@ -18,7 +18,7 @@ export class CandidateService {
   }
 
   async findOne(id: number) {
-    const candidate = await Candidate.find({'id': id});
+    const candidate = await Candidate.findOneBy({'id': id});
     return candidate;
   }
 

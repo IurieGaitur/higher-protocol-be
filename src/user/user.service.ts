@@ -15,7 +15,7 @@ export class UserService {
   }
 
   async findByIdAndEmail(id: number, email: string) {
-    const user = await User.findOne({'id': id, 'email': email});
+    const user = await User.findOneBy({'id': id, 'email': email});
     if (!user) {
       throw new HttpException('User is not existent', HttpStatus.UNAUTHORIZED);
     }
@@ -28,12 +28,12 @@ export class UserService {
   }
 
   async findOne(email: string) {
-    const user = await User.findOne({'email': email});
+    const user = await User.findOneBy({'email': email});
     return user;
   }
 
   async findOneById(id: number) {
-    const user = await User.findOne({'id': id});
+    const user = await User.findOneBy({'id': id});
     return user;
   }
 
