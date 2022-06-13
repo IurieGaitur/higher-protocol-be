@@ -50,7 +50,7 @@
     "sqlite": "^4.0.23",
     "sqlite3": "^5.0.8",
     "swagger-ui-express": "^4.4.0",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.45"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
