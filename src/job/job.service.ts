@@ -25,7 +25,7 @@ export class JobService {
     private readonly jobRepo: Repository<Job>
   ) {
     this.jobModel = new JobContractModel()
-    this.jobModel.connectHedera().then(it => this.contractId = this.jobModel.tryLoadContract());
+    // this.jobModel.connectHedera().then(it => this.contractId = this.jobModel.tryLoadContract());
   }
 
   create(createJobDto: CreateJobDto) {
