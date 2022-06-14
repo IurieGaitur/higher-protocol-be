@@ -9,14 +9,21 @@ import { JobContract } from './entities/job_contract.entity';
 import AccountCreation from './model/account-creation.hedera';
 import JobContractModel from './model/job-contract.hedera';
 import * as fs from 'fs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 
 @Injectable()
 export class JobService {
 
+  
   jobModel: JobContractModel;
   contractId: ContractId;
 
-  constructor() {
+  constructor(
+    @InjectRepository(Job)
+    private readonly jobRepo: Repository<Job>
+  ) {
     this.jobModel = new JobContractModel()
     this.jobModel.connectHedera().then(it => this.contractId = this.jobModel.tryLoadContract());
   }
@@ -27,9 +34,12 @@ export class JobService {
     return saved;
   }
 
-  async findAll() {
-    const jobs = await Job.find();
-    return jobs;
+  async findAll(query: PaginateQuery): Promise<Paginated<Job>> {
+    return paginate(query, this. jobRepo, {
+      sortableColumns: ['id', 'job_name'],
+      searchableColumns: ['job_name'],
+      defaultSortBy: [['id', 'DESC']]
+    })
   }
 
   async findOne(id: number): Promise<Job> {

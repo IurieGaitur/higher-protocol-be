@@ -5,6 +5,8 @@ import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { LocalAuthGuard } from './../auth/local-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
+import { Candidate } from './entities/candidate.entity';
 
 @ApiTags('Candidates')
 @Controller('candidates')
@@ -19,8 +21,8 @@ export class CandidateController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.candidateService.findAll();
+  findAll(@Paginate() query: PaginateQuery): Promise<Paginated<Candidate>> {
+    return this.candidateService.findAll(query);
   }
 
   @UseGuards(JwtAuthGuard)

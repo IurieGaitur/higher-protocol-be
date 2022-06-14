@@ -5,6 +5,8 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { Job } from './entities/job.entity';
+import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 
 @ApiTags('Jobs')
 @Controller('jobs')
@@ -19,8 +21,8 @@ export class JobController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.jobService.findAll();
+  findAll(@Paginate() query: PaginateQuery): Promise<Paginated<Job>> {
+    return this.jobService.findAll(query);
   }
 
   @UseGuards(JwtAuthGuard)

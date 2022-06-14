@@ -1,10 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
+import { Repository } from 'typeorm';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import { Candidate } from './entities/candidate.entity';
 
 @Injectable()
 export class CandidateService {
+
+  constructor(
+    @InjectRepository(Candidate)
+    private readonly candidateRepo: Repository<Candidate>
+  ) {}
+
   async create(createCandidateDto: CreateCandidateDto) {
      console.log(createCandidateDto);
      const candidate = CreateCandidateDto.toCandidate(createCandidateDto);
@@ -12,9 +21,12 @@ export class CandidateService {
      return created;
   }
 
-  async findAll() {
-    const candidates = await Candidate.find();
-    return candidates;
+  async findAll(query: PaginateQuery): Promise<Paginated<Candidate>> {
+    return paginate(query, this. candidateRepo, {
+      sortableColumns: ['id', 'personal_details'],
+      searchableColumns: ['personal_details'],
+      defaultSortBy: [['id', 'DESC']]
+    })
   }
 
   async findOne(id: number) {
