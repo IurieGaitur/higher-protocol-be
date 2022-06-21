@@ -4,11 +4,12 @@ import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { LocalAuthGuard } from './../auth/local-auth.guard';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { Candidate } from './entities/candidate.entity';
 
 @ApiTags('Candidates')
+@ApiBearerAuth()
 @Controller('candidates')
 export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}
