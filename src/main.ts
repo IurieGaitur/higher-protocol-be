@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('Sail a job API documentation')
     .setDescription('This document describes all available API developed')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
