@@ -10,13 +10,14 @@
     {
         "name": "default",
         "type": "postgres",
-        "host": "ec2-54-155-92-75.eu-west-1.compute.amazonaws.com",
+        "host": "ec2-52-19-188-149.eu-west-1.compute.amazonaws.com",
         "port": 5432,
-        "database": "dfipa7732rd3qa",
-        "username": "edqseegpwsrmqh",
-        "password": "9c575e80c1d2fcdd5dd01f3de02896249c8bcba67a2b62ea818f12fd7e8a6f81",
+        "database": "d44sb9h0qhegib",
+        "username": "uyovhjpvuiqdvd",
+        "password": "71b7775273fd5b8b212ae6e8e2814e1f2e366736cf1a754cb7bd92b0334ee843",
         "entities": ["dist/**/*.entity{.ts,.js}"],
         "ssl": true,
+        "synchronize": true,
         "extra": {
             "ssl": {
                 "rejectUnauthorized": false
