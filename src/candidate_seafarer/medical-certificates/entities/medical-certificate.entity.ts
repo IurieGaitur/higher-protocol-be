@@ -15,5 +15,5 @@ export class MedicalCertificate {
     @Column()
     valid_until: Date;
     @Column()
-    med_dile: string;
+    med_file: string;
 }

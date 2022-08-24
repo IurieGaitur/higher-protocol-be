@@ -14,6 +14,7 @@ export class MedicalCertificatesController {
   @Post()
   @UseInterceptors(FileInterceptor('medical_cert', { dest: './files' }))
   create(@UploadedFile() file, @Body() createMedicalCertificateDto: CreateMedicalCertificateDto) {
+    createMedicalCertificateDto.med_file = file.filename
     return this.medicalCertificatesService.create(createMedicalCertificateDto);
   }
 

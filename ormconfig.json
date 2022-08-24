@@ -4,7 +4,6 @@
         "type": "sqlite",
         "database": "config/development.sqlite3",
         "entities": ["dist/**/*.entity{.ts,.js}"],
-        "synchronize": true,
         "autoLoadEntities": true
     },
     {
@@ -17,7 +16,6 @@
         "password": "71b7775273fd5b8b212ae6e8e2814e1f2e366736cf1a754cb7bd92b0334ee843",
         "entities": ["dist/**/*.entity{.ts,.js}"],
         "ssl": true,
-        "synchronize": true,
         "extra": {
             "ssl": {
                 "rejectUnauthorized": false
