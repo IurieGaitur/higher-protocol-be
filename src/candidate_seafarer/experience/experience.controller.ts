@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ExperienceService } from './experience.service';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Seafarer/Experience')
 @ApiBearerAuth()
@@ -11,7 +12,9 @@ export class ExperienceController {
   constructor(private readonly experienceService: ExperienceService) {}
 
   @Post()
-  create(@Body() createExperienceDto: CreateExperienceDto) {
+  @UseInterceptors(FileInterceptor('file_experience', { dest: './files/experience' }))
+  create(@UploadedFile() file, @Body() createExperienceDto: CreateExperienceDto) {
+    createExperienceDto.file_experience = file.filename;
     return this.experienceService.create(createExperienceDto);
   }
 
@@ -26,7 +29,9 @@ export class ExperienceController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExperienceDto: UpdateExperienceDto) {
+  @UseInterceptors(FileInterceptor('file_experience', { dest: './files/experience' }))
+  update(@Param('id') id: string, @UploadedFile() file, @Body() updateExperienceDto: UpdateExperienceDto) {
+    updateExperienceDto.file_experience = file.filename;
     return this.experienceService.update(+id, updateExperienceDto);
   }
 

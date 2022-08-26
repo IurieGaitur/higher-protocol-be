@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EducationService } from './education.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Seafarer/Education')
 @ApiBearerAuth()
@@ -11,7 +12,9 @@ export class EducationController {
   constructor(private readonly educationService: EducationService) {}
 
   @Post()
-  create(@Body() createEducationDto: CreateEducationDto) {
+  @UseInterceptors(FileInterceptor('file_education', { dest: './files' }))
+  create(@UploadedFile() file, @Body() createEducationDto: CreateEducationDto) {
+    createEducationDto.file_education = file.filename
     return this.educationService.create(createEducationDto);
   }
 
@@ -26,7 +29,9 @@ export class EducationController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEducationDto: UpdateEducationDto) {
+  @UseInterceptors(FileInterceptor('file_education', { dest: './files' }))
+  update(@Param('id') id: string, @UploadedFile() file, @Body() updateEducationDto: UpdateEducationDto) {
+    updateEducationDto.file_education = file.filename
     return this.educationService.update(+id, updateEducationDto);
   }
 

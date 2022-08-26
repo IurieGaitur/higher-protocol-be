@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -48,5 +48,10 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('medical_cert/:fileId')
+  async serveMedicalCerts(@Param('fileId') fileId, @Res() res): Promise<any> {
+    res.sendFile(fileId, { root: 'files/medical_cert/'});
   }
 }

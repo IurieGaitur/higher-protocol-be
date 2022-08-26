@@ -18,6 +18,8 @@ import { EducationModule } from './candidate_seafarer/education/education.module
 import { CertificationModule } from './candidate_seafarer/certification/certification.module';
 import { MedicalCertificatesModule } from './candidate_seafarer/medical-certificates/medical-certificates.module';
 import { RecordSeaServeModule } from './candidate_seafarer/record-sea-serve/record-sea-serve.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -26,6 +28,9 @@ import { RecordSeaServeModule } from './candidate_seafarer/record-sea-serve/reco
         Object.assign(await getConnectionOptions()),
     }),
     UserModule, JobModule, AssessmentModule, CandidateModule, StatsModule, AuthModule, ProfileModule, DeclarationModule, ExperienceModule, TravelDocsModule, EducationModule, CertificationModule, MedicalCertificatesModule, RecordSeaServeModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'files/*'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

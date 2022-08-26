@@ -12,9 +12,10 @@ export class MedicalCertificatesController {
   constructor(private readonly medicalCertificatesService: MedicalCertificatesService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('medical_cert', { dest: './files' }))
+  @UseInterceptors(FileInterceptor('medical_cert', { dest: './files/medical_cert' }))
   create(@UploadedFile() file, @Body() createMedicalCertificateDto: CreateMedicalCertificateDto) {
-    createMedicalCertificateDto.med_file = file.filename
+    createMedicalCertificateDto.med_file = file?.filename || ""
+    console.log(createMedicalCertificateDto.med_file)
     return this.medicalCertificatesService.create(createMedicalCertificateDto);
   }
 
@@ -29,7 +30,9 @@ export class MedicalCertificatesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMedicalCertificateDto: UpdateMedicalCertificateDto) {
+  @UseInterceptors(FileInterceptor('medical_cert', { dest: './files/medical_cert' }))
+  update(@Param('id') id: string, @UploadedFile() file, @Body() updateMedicalCertificateDto: UpdateMedicalCertificateDto) {
+    updateMedicalCertificateDto.med_file = file.filename
     return this.medicalCertificatesService.update(+id, updateMedicalCertificateDto);
   }
 
