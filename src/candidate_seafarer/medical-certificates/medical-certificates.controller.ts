@@ -7,15 +7,14 @@ import { FileInterceptor } from '@nestjs/platform-express/multer';
 
 @ApiTags('Seafarer/Medical-Certificates')
 @ApiBearerAuth()
-@Controller('seafarer/medical-certificates')
+@Controller('seafarers/medical-certificates')
 export class MedicalCertificatesController {
   constructor(private readonly medicalCertificatesService: MedicalCertificatesService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('medical_cert', { dest: './files/medical_cert' }))
   create(@UploadedFile() file, @Body() createMedicalCertificateDto: CreateMedicalCertificateDto) {
-    createMedicalCertificateDto.med_file = file?.filename || ""
-    console.log(createMedicalCertificateDto.med_file)
+    createMedicalCertificateDto.med_file = file?.file || ""
     return this.medicalCertificatesService.create(createMedicalCertificateDto);
   }
 

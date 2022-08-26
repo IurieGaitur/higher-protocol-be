@@ -7,7 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Seafarer/Education')
 @ApiBearerAuth()
-@Controller('seafarer/education')
+@Controller('seafarers/educations')
 export class EducationController {
   constructor(private readonly educationService: EducationService) {}
 

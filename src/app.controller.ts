@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body, Param, Res } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body, Param, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -8,6 +8,7 @@ import { UserService } from './user/user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginUserDto } from './user/dto/login-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('User')
 @Controller()
@@ -22,8 +23,10 @@ export class AppController {
   }
 
   @Post('/register')
-  async register(@Body() createUserDto: CreateUserDto) {
-      const user = this.authService.register(createUserDto);
+  @UseInterceptors(FileInterceptor('user_pic', { dest: './files/user_pic' }))
+  async register(@UploadedFile() file, @Body() createUserDto: CreateUserDto) {
+      const user = await this.authService.register(createUserDto);
+      user.image = file.filename || "";
       return user;
   }
 

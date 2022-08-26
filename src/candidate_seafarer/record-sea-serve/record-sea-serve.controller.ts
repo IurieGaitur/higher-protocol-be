@@ -6,7 +6,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Seafarer/Record_Sea_Serve')
 @ApiBearerAuth()
-@Controller('seafarer/record-sea-serve')
+@Controller('seafarers/record-sea-serves')
 export class RecordSeaServeController {
   constructor(private readonly recordSeaServeService: RecordSeaServeService) {}
 

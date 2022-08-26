@@ -8,7 +8,6 @@ import { User } from './entities/user.entity';
 export class UserService {
 
   async create(createUserDto: CreateUserDto) {
-    console.log(createUserDto);
     let newUser = CreateUserDto.toUser(createUserDto);
     const addedUser = await newUser.save()
     return addedUser;

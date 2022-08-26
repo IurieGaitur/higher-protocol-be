@@ -6,7 +6,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Seafarer/Declaration')
 @ApiBearerAuth()
-@Controller('seafarer/declaration')
+@Controller('seafarers/declarations')
 export class DeclarationController {
   constructor(private readonly declarationService: DeclarationService) {}
 

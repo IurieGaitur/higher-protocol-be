@@ -19,8 +19,7 @@ export class ProfileService {
   }
 
   async findAll()  {
-    let result = await this.profilesRepo.find()
-    console.log(result)
+    let result = await this.profilesRepo.find();
     return result
   }
 
