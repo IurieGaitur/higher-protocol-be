@@ -25,8 +25,6 @@ export class Profile {
     @Column()
     date_of_birth: Date;
     @Column()
-    age: number;
-    @Column()
     place_birth: string;
     @Column()
     religion: string;

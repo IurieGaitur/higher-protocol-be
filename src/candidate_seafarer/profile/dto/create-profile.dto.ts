@@ -20,8 +20,6 @@ export class CreateProfileDto {
     @ApiProperty()
     address: string;
     @ApiProperty()
-    date_of_birth: Date;
-    @ApiProperty()
     age: number;
     @ApiProperty()
     place_birth: string;
