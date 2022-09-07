@@ -16,6 +16,6 @@ export class Certification {
     valid_until: Date;
     @Column()
     type: number;
-    @Column()
+    @Column({nullable: true})
     file_cert: string;
 }

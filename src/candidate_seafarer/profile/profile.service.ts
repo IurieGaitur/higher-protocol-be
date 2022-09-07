@@ -20,21 +20,21 @@ export class ProfileService {
 
   async findAll()  {
     let result = await this.profilesRepo.find();
-    return result
+    return result;
   }
 
-  async findOne(id: number) {
-    const candidate = await this.profilesRepo.findOneBy({'id': id});
-    return candidate;
+  async findOneByUserId(id: number) {
+    const profile = await this.profilesRepo.findOneBy({'user_id': id});
+    return profile;
   }
 
   async update(id: number, updateProfileDto: UpdateProfileDto) {
-    const candidate = await this.profilesRepo.update(id, updateProfileDto);
-    return candidate;
+    const profile = await this.profilesRepo.update(id, updateProfileDto);
+    return profile;
   }
 
   async remove(id: number) {
-    const candidate = await this.findOne(id);
+    const profile = await this.findOneByUserId(id);
    await this.profilesRepo.delete(id);
   }
 }

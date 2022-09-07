@@ -12,6 +12,6 @@ export class TravelDoc {
     number_doc: string;
     @Column()
     valid_until: Date;
-    @Column()
+    @Column({nullable: true})
     file_doc: string;
 }

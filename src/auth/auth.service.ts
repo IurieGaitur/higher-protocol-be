@@ -14,7 +14,6 @@ export class AuthService {
 
       async validateUser(email: string, pass: string): Promise<any> {
         const user = await this.usersService.findOne(email);
-        console.log(user, pass, email);
         if (user && user.password === pass) {
           return user;
         }
@@ -25,8 +24,12 @@ export class AuthService {
         const userExists = await this.validateUser(email, pass);
         if (userExists) {
           const payload = { email: email, id: userExists.id };
+          const user = await this.usersService.findOne(email);
+          delete user.password;
+          
           return {
             access_token: this.jwtService.sign(payload),
+            ...user
           };
         } else {
           throw new HttpException("Email or password are incorrect", HttpStatus.UNAUTHORIZED);

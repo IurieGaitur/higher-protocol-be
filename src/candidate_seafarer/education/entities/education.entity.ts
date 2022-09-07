@@ -10,6 +10,6 @@ export class Education {
     from: Date;
     @Column()
     to: Date;
-    @Column()
+    @Column({nullable: true})
     file_education: string;
 }

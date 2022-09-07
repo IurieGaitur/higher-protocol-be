@@ -16,6 +16,6 @@ export class Experience {
     duration: number;
     @Column()
     valid_status: string;
-    @Column()
+    @Column({nullable: true})
     file_experience: string;
 }

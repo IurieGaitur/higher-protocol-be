@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
 @Entity("users")
@@ -12,10 +13,20 @@ export class User extends BaseEntity{
     last_name: string;
     @Column()
     category: number;
-    @Column()
+    @Column({ nullable: true })
     image: string;
+    @Exclude()
     @Column()
     password: string;
     @Column()
     created_at: Date;
+    
+    @Column({ nullable: true })
+    company_id: number;
+    @Column({ nullable: true })
+    status: string;
+    @Column({ nullable: true })
+    position: string;
+    @Column({ nullable: true })
+    background_img: string;
 }

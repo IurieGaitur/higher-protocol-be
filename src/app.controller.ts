@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body, Param, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, HttpException, HttpStatus, Body, Param, Res, UseInterceptors, UploadedFile, ClassSerializerInterceptor } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -17,6 +17,7 @@ export class AppController {
 
   
   @Post('/login')
+  @UseInterceptors(ClassSerializerInterceptor)
   async login(@Body() loginUserDto: LoginUserDto) {
       const user = this.authService.login(loginUserDto.email, loginUserDto.password);
       return user;
@@ -30,15 +31,15 @@ export class AppController {
       return user;
   }
 
-  @Get()
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Request() req) {}
+  // @Get()
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuth(@Request() req) {}
 
-  @Get('redirect')
-  @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Request() req) {
-    return this.appService.googleLogin(req)
-  }
+  // @Get('redirect')
+  // @UseGuards(AuthGuard('google'))
+  // googleAuthRedirect(@Request() req) {
+  //   return this.appService.googleLogin(req)
+  // }
 
 
   @UseGuards(JwtAuthGuard)

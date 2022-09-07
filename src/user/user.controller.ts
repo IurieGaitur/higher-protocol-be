@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,12 +19,14 @@ export class UserController {
   // }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOneById(+id);
