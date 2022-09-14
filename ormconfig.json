@@ -14,7 +14,7 @@
         "database": "d44sb9h0qhegib",
         "username": "uyovhjpvuiqdvd",
         "password": "71b7775273fd5b8b212ae6e8e2814e1f2e366736cf1a754cb7bd92b0334ee843",
-        "entities": ["dist/**/*.entity{.ts,.js}"],
+        "entities": ["dist/**/*.entity{.ts,.js}", "dist/**/**/*.entity{.ts,.js}"],
         "ssl": true,
         "syncronize": false, 
         "extra": {

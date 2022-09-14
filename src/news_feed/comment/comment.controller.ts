@@ -6,7 +6,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @ApiTags('Comments')
 @ApiBearerAuth()
-@Controller('comment')
+@Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -15,9 +15,9 @@ export class CommentController {
     return this.commentService.create(createCommentDto);
   }
 
-  @Get(':user_id')
-  findAllOfProfile(@Param('user_id') user_id: number) {
-    return this.commentService.findAllOfProfile(user_id);
+  @Get(':post_id')
+  findAllByPostId(@Param('post_id') post_id: number) {
+    return this.commentService.findAllOfPost(post_id);
   }
 
   @Patch(':id')

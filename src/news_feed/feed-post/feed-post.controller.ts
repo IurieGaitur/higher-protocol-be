@@ -9,7 +9,7 @@ import { FeedPost } from './entities/feed-post.entity';
 
 @ApiTags('FeedPost')
 @ApiBearerAuth()
-@Controller('feed-post')
+@Controller('feed-posts')
 export class FeedPostController {
   constructor(private readonly feedPostService: FeedPostService) {}
 

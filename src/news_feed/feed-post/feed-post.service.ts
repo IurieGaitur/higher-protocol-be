@@ -15,6 +15,11 @@ export class FeedPostService {
   ) {}
 
   create(createFeedPostDto: CreateFeedPostDto) {
+    createFeedPostDto.created_at = new Date();
+    createFeedPostDto.comments_nr = 0;
+    createFeedPostDto.likes_nr = 0;
+    createFeedPostDto.shares_nr = 0;
+
     const created = this.feedPostRepo.save(createFeedPostDto)
     return created;
   }

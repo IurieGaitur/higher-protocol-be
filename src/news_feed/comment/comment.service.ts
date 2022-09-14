@@ -14,26 +14,28 @@ export class CommentService {
   ) {}
 
   create(createCommentDto: CreateCommentDto) {
+    createCommentDto.created_at = new Date();
     const created = this.commentRepo.save(createCommentDto)
     return created;
   }
 
-  async findAllOfProfile(user_id: number)  {
-    return await this.commentRepo.findBy({'creator_id': user_id})
+  async findAllOfPost(post_id: number) {
+    const comment = await this.commentRepo.findBy({'post_id': post_id});
+    return comment;
   }
 
   async update(id: number, updateCommenteDto: UpdateCommentDto) {
-    const candidate = await this.commentRepo.update(id, updateCommenteDto);
-    return candidate;
+    const comment = await this.commentRepo.update(id, updateCommenteDto);
+    return comment;
   }
 
   async remove(id: number) {
-    const candidate = await this.findOne(id);
+    const comment = await this.findOne(id);
    await this.commentRepo.delete(id);
   }
 
   private async findOne(id: number) {
-    const candidate = await this.commentRepo.findOneBy({'id': id});
-    return candidate;
+    const comment = await this.commentRepo.findOneBy({'id': id});
+    return comment;
   }
 }

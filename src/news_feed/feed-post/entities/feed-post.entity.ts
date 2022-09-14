@@ -1,5 +1,6 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity("feed_post")
 export class FeedPost {
     @PrimaryGeneratedColumn()
     id: number;
