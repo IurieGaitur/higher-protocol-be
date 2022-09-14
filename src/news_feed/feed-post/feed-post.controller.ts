@@ -13,13 +13,13 @@ import { FeedPost } from './entities/feed-post.entity';
 export class FeedPostController {
   constructor(private readonly feedPostService: FeedPostService) {}
 
-  @UseGuards(JwtAuthGuard)
+  
   @Post()
   create(@Body() createFeedPostDto: CreateFeedPostDto) {
     return this.feedPostService.create(createFeedPostDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @ApiQuery({name: 'limit', required: false})
   @ApiQuery({name: 'page', required: false})
   @ApiQuery({name: 'search', required: false})
@@ -29,19 +29,19 @@ export class FeedPostController {
     return this.feedPostService.findAll(query);
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.feedPostService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFeedPostDto: UpdateFeedPostDto) {
     return this.feedPostService.update(+id, updateFeedPostDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.feedPostService.remove(+id);

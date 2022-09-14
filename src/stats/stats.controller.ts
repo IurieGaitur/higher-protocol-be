@@ -11,31 +11,26 @@ import { ApiTags } from '@nestjs/swagger';
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createStatDto: CreateStatDto) {
     return this.statsService.create(createStatDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.statsService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.statsService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStatDto: UpdateStatDto) {
     return this.statsService.update(+id, updateStatDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.statsService.remove(+id);

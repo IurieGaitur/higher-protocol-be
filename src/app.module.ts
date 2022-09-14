@@ -23,6 +23,8 @@ import { CommentModule } from './news_feed/comment/comment.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 
 @Module({
@@ -39,6 +41,9 @@ import { join } from 'path';
     CommentModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService],
+  providers: [AppService, UserService, {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    }],
 })
 export class AppModule {}

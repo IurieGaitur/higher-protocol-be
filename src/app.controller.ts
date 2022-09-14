@@ -9,13 +9,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { LoginUserDto } from './user/dto/login-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Public } from './auth/auth.public';
 
 @ApiTags('User')
 @Controller()
 export class AppController {
   constructor(private authService: AuthService, private appService: AppService, private userService: UserService) {}
 
-  
+  @Public()
   @Post('/login')
   @UseInterceptors(ClassSerializerInterceptor)
   async login(@Body() loginUserDto: LoginUserDto) {
@@ -23,6 +24,7 @@ export class AppController {
       return user;
   }
 
+  @Public()
   @Post('/register')
   @UseInterceptors(FileInterceptor('user_pic', { dest: './files/user_pic' }))
   async register(@UploadedFile() file, @Body() createUserDto: CreateUserDto) {
@@ -42,7 +44,7 @@ export class AppController {
   // }
 
 
-  @UseGuards(JwtAuthGuard)
+
   @Get('profile')
   async getProfile(@Request() req) {
     const user = await this.userService.findByIdAndEmail(req.user.id, req.user.email);

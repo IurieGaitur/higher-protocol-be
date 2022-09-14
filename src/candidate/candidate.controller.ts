@@ -14,13 +14,11 @@ import { Candidate } from './entities/candidate.entity';
 export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createCandidateDto: CreateCandidateDto) {
     return this.candidateService.create(createCandidateDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiQuery({name: 'limit', required: false})
   @ApiQuery({name: 'page', required: false})
   @ApiQuery({name: 'search', required: false})
@@ -30,19 +28,16 @@ export class CandidateController {
     return this.candidateService.findAll(query);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.candidateService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCandidateDto: UpdateCandidateDto) {
     return this.candidateService.update(+id, updateCandidateDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.candidateService.remove(+id);
