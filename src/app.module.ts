@@ -18,10 +18,12 @@ import { EducationModule } from './candidate_seafarer/education/education.module
 import { CertificationModule } from './candidate_seafarer/certification/certification.module';
 import { MedicalCertificatesModule } from './candidate_seafarer/medical-certificates/medical-certificates.module';
 import { RecordSeaServeModule } from './candidate_seafarer/record-sea-serve/record-sea-serve.module';
+import { FeedPostModule } from './news_feed/feed-post/feed-post.module';
+import { CommentModule } from './news_feed/comment/comment.module';
+
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { FeedPostModule } from './feed-post/feed-post.module';
-import { CommentModule } from './comment/comment.module';
+
 
 @Module({
   imports: [
