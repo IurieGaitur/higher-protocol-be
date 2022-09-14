@@ -20,6 +20,8 @@ import { MedicalCertificatesModule } from './candidate_seafarer/medical-certific
 import { RecordSeaServeModule } from './candidate_seafarer/record-sea-serve/record-sea-serve.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FeedPostModule } from './feed-post/feed-post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'files/*'),
     }),
+    FeedPostModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],
