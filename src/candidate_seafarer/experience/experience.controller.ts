@@ -4,6 +4,8 @@ import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { DiskStorageUtil } from 'config/storage.config';
 
 @ApiTags('Seafarer/Experience')
 @ApiBearerAuth()
@@ -12,7 +14,7 @@ export class ExperienceController {
   constructor(private readonly experienceService: ExperienceService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file_experience', { dest: './files/experience' }))
+  @UseInterceptors(FileInterceptor('file_experience', {storage: diskStorage({destination: './files/experience', filename: DiskStorageUtil.uniqueName})}))
   create(@UploadedFile() file, @Body() createExperienceDto: CreateExperienceDto) {
     createExperienceDto.file_experience = file.filename;
     return this.experienceService.create(createExperienceDto);
@@ -29,7 +31,7 @@ export class ExperienceController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file_experience', { dest: './files/experience' }))
+  @UseInterceptors(FileInterceptor('file_experience', {storage: diskStorage({destination: './files/experience', filename: DiskStorageUtil.uniqueName})}))
   update(@Param('id') id: string, @UploadedFile() file, @Body() updateExperienceDto: UpdateExperienceDto) {
     updateExperienceDto.file_experience = file.filename;
     return this.experienceService.update(+id, updateExperienceDto);

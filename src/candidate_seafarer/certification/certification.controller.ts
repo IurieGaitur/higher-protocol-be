@@ -5,6 +5,8 @@ import { UpdateCertificationDto } from './dto/update-certification.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { DiskStorageUtil } from 'config/storage.config';
+import { diskStorage } from 'multer';
 
 @ApiTags('Seafarer/Certification')
 @ApiBearerAuth()
@@ -13,7 +15,7 @@ export class CertificationController {
   constructor(private readonly certificationService: CertificationService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file_cert', { dest: './files/certificates' }))
+  @UseInterceptors(FileInterceptor('file_cert', {storage: diskStorage({destination: './files/certificates', filename: DiskStorageUtil.uniqueName})}))
   create(@UploadedFile() file, @Body() createCertificationDto: CreateCertificationDto) {
     createCertificationDto.file_cert = file.filename;
     return this.certificationService.create(createCertificationDto);
@@ -30,7 +32,7 @@ export class CertificationController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file_cert', { dest: './files/certificates' }))
+  @UseInterceptors(FileInterceptor('file_cert', {storage: diskStorage({destination: './files/certificates', filename: DiskStorageUtil.uniqueName})}))
   update(@Param('id') id: string, @UploadedFile() file, @Body() updateCertificationDto: UpdateCertificationDto) {
     updateCertificationDto.file_cert = file.filename;
     return this.certificationService.update(+id, updateCertificationDto);

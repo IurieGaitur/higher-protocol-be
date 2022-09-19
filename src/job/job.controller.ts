@@ -14,13 +14,11 @@ import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 export class JobController {
   constructor(private readonly jobService: JobService) {}
 
-  
   @Post()
   create(@Body() createJobDto: CreateJobDto) {
     return this.jobService.create(createJobDto);
   }
 
-  
   @ApiQuery({name: 'limit', required: false})
   @ApiQuery({name: 'page', required: false})
   @ApiQuery({name: 'search', required: false})
@@ -30,18 +28,15 @@ export class JobController {
     return this.jobService.findAll(query);
   }
 
-  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.jobService.findOne(+id);
   }
 
-  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
     return this.jobService.update(+id, updateJobDto);
   }
-
   
   @Delete(':id')
   remove(@Param('id') id: string) {
@@ -50,20 +45,17 @@ export class JobController {
 
   //Smart Contracts part
 
-  
   @Get('/:id/contract')
   getContract(@Param('id') id: string) {
     return this.jobService.getContract(+id);
   }
 
-  
   @Post('/:id/contract')
   async generateContract(@Param('id') id: string, @Body() contractDto: CreateContractDto) {
     contractDto.job_id = parseInt(id)
     return await this.jobService.createContract(contractDto);
   }
 
-  
   @Post('/contract/deploy')
   async deployContract(@Param('id') id: string) {
     return this.jobService.deployContract();

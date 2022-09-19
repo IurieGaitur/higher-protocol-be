@@ -4,6 +4,8 @@ import { CreateTravelDocDto } from './dto/create-travel-doc.dto';
 import { UpdateTravelDocDto } from './dto/update-travel-doc.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { DiskStorageUtil } from 'config/storage.config';
 
 @ApiTags('Seafarer/Travel_Docs')
 @ApiBearerAuth()
@@ -12,7 +14,7 @@ export class TravelDocsController {
   constructor(private readonly travelDocsService: TravelDocsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('travel_doc', { dest: './files/travel_doc' }))
+  @UseInterceptors(FileInterceptor('travel_doc', {storage: diskStorage({destination: './files/travel_doc', filename: DiskStorageUtil.uniqueName})}))
   create(@UploadedFile() file, @Body() createTravelDocDto: CreateTravelDocDto) {
     createTravelDocDto.file_doc = file.filename;
     return this.travelDocsService.create(createTravelDocDto);
@@ -29,7 +31,7 @@ export class TravelDocsController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('travel_doc', { dest: './files/travel_doc' }))
+  @UseInterceptors(FileInterceptor('travel_doc', {storage: diskStorage({destination: './files/travel_doc', filename: DiskStorageUtil.uniqueName})}))
   update(@Param('id') id: string, @UploadedFile() file, @Body() updateTravelDocDto: UpdateTravelDocDto) {
     updateTravelDocDto.file_doc = file.filename;
     return this.travelDocsService.update(+id, updateTravelDocDto);

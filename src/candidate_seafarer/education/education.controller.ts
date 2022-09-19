@@ -4,6 +4,8 @@ import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { DiskStorageUtil } from 'config/storage.config';
 
 @ApiTags('Seafarer/Education')
 @ApiBearerAuth()
@@ -12,7 +14,7 @@ export class EducationController {
   constructor(private readonly educationService: EducationService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file_education', { dest: './files' }))
+  @UseInterceptors(FileInterceptor('file_education', {storage: diskStorage({destination: './files/education', filename: DiskStorageUtil.uniqueName})}))
   create(@UploadedFile() file, @Body() createEducationDto: CreateEducationDto) {
     createEducationDto.file_education = file.filename
     return this.educationService.create(createEducationDto);
@@ -29,7 +31,7 @@ export class EducationController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file_education', { dest: './files' }))
+  @UseInterceptors(FileInterceptor('file_education', {storage: diskStorage({destination: './files/education', filename: DiskStorageUtil.uniqueName})}))
   update(@Param('id') id: string, @UploadedFile() file, @Body() updateEducationDto: UpdateEducationDto) {
     updateEducationDto.file_education = file.filename
     return this.educationService.update(+id, updateEducationDto);

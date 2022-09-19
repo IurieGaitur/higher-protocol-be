@@ -10,6 +10,9 @@ import { LoginUserDto } from './user/dto/login-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Public } from './auth/auth.public';
+import { DiskStorageUtil } from "./../config/storage.config"
+import { Logger } from '@nestjs/common';
+import { diskStorage } from 'multer';
 
 @ApiTags('User')
 @Controller()
@@ -24,26 +27,15 @@ export class AppController {
       return user;
   }
 
+
   @Public()
   @Post('/register')
-  @UseInterceptors(FileInterceptor('user_pic', { dest: './files/user_pic' }))
+  @UseInterceptors(FileInterceptor('user_pic', {storage: diskStorage({destination: './files/user_pic', filename: DiskStorageUtil.uniqueName})}))
   async register(@UploadedFile() file, @Body() createUserDto: CreateUserDto) {
       const user = await this.authService.register(createUserDto);
       user.image = file.filename || "";
       return user;
   }
-
-  // @Get()
-  // @UseGuards(AuthGuard('google'))
-  // async googleAuth(@Request() req) {}
-
-  // @Get('redirect')
-  // @UseGuards(AuthGuard('google'))
-  // googleAuthRedirect(@Request() req) {
-  //   return this.appService.googleLogin(req)
-  // }
-
-
 
   @Get('profile')
   async getProfile(@Request() req) {
@@ -54,10 +46,5 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
-  }
-
-  @Get('medical_cert/:fileId')
-  async serveMedicalCerts(@Param('fileId') fileId, @Res() res): Promise<any> {
-    res.sendFile(fileId, { root: 'files/medical_cert/'});
   }
 }

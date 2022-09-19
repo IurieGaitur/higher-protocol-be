@@ -1,5 +1,6 @@
 import { Column, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
+
 export class PostReaction {
     @PrimaryGeneratedColumn()
     id: string;

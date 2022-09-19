@@ -31,6 +31,9 @@ export class CreateUserDto {
     @ApiProperty()
     created_at: Date;
 
+    @ApiProperty()
+    status: string;
+
     constructor(email:string, password:string, firstName:string, lastName:string, category:number) {
         this.email = email;
         this.password = password;

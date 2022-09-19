@@ -4,12 +4,15 @@ import * as helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common/pipes';
 require('dotenv').config()
+import * as express from 'express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
+  app.use(express.static(join(__dirname, '../files')))
 
   const config = new DocumentBuilder()
     .setTitle('Sail a job API documentation')
