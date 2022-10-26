@@ -22,6 +22,7 @@ export class AuthService {
     
       async login(email: string, pass: string) {
         const userExists = await this.validateUser(email, pass);
+        console.log("Tried to check 2");
         if (userExists) {
           const payload = { email: email, id: userExists.id };
           const user = await this.usersService.findOne(email);

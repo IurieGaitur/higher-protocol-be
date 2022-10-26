@@ -34,6 +34,8 @@ export class CreateUserDto {
     @ApiProperty()
     status: string;
 
+    provider: string;
+
     constructor(email:string, password:string, firstName:string, lastName:string, category:number) {
         this.email = email;
         this.password = password;
@@ -42,12 +44,12 @@ export class CreateUserDto {
         this.category = category;
         this.image = "";
         this.created_at = new Date();
+        this.provider = "local";
     }
 
     static toUser(createUser: CreateUserDto): User {
         const user = new User();
         Object.assign(user, createUser);
-        user.image = "";
         user.created_at = new Date();
         return user;
     }

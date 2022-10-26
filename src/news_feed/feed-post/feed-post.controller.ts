@@ -3,7 +3,6 @@ import { FeedPostService } from './feed-post.service';
 import { CreateFeedPostDto } from './dto/create-feed-post.dto';
 import { UpdateFeedPostDto } from './dto/update-feed-post.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { FeedPost } from './entities/feed-post.entity';
 

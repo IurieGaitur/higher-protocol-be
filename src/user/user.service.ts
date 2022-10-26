@@ -36,6 +36,23 @@ export class UserService {
     return user;
   }
 
+  async getOrCreate(email: string, firstName: string, lastName: string, image: string, category: number, 
+    provider: string) {
+    if (provider != null && provider == 'google' || provider == 'fb' || provider == 'linkedin') {
+      let user = await User.findOneBy({'email': email});
+      if (user == null) {
+        let userDTO = new CreateUserDto(email, "null", firstName, lastName, category);
+        userDTO.image = image;
+        userDTO.provider = provider;
+        user = await this.create(userDTO);
+      }
+      delete user["password"];
+      delete user["provider"];
+
+      return user;
+    }
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     // updateUserDto.id = id
     // let newUser = updateUserDto.toUser();

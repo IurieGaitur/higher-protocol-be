@@ -15,7 +15,6 @@ export class CandidateService {
   ) {}
 
   async create(createCandidateDto: CreateCandidateDto) {
-     console.log(createCandidateDto);
      const candidate = CreateCandidateDto.toCandidate(createCandidateDto);
      let created = await candidate.save();
      return created;

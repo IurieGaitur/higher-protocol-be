@@ -2,8 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { StatsService } from './stats.service';
 import { CreateStatDto } from './dto/create-stat.dto';
 import { UpdateStatDto } from './dto/update-stat.dto';
-import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { LocalAuthGuard } from './../auth/local-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Stats')

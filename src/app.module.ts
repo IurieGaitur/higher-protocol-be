@@ -24,7 +24,7 @@ import { CommentModule } from './news_feed/comment/comment.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 
 
 @Module({

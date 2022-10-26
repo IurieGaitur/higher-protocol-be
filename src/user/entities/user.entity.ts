@@ -29,4 +29,7 @@ export class User extends BaseEntity{
     position: string;
     @Column({ nullable: true })
     background_img: string;
+
+    @Column({default: 'local',  nullable: true})
+    provider: string;
 }
