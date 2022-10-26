@@ -72,7 +72,8 @@ export class AuthController {
       sameSite: 'lax',
     });
     
-    res.json({accessToken, ...activeUser});
+    //res.json({accessToken, ...activeUser});
+    res.redirect(`https://sailajob-ui.vercel.app/oauth/success?token=${accessToken}`);
   }
 
 
